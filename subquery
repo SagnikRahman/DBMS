@@ -1,0 +1,70 @@
+/*
+CREATE TABLE Jobs (
+    job_id NUMBER PRIMARY KEY,
+    job_title VARCHAR2(50),
+    min_salary NUMBER(10, 2),
+    max_salary NUMBER(10, 2)
+);
+INSERT INTO Jobs VALUES (1, 'Sales Representative', 3000, 7000);
+INSERT INTO Jobs VALUES (2, 'Sales Manager', 5000, 10000);
+INSERT INTO Jobs VALUES (3, 'Software Engineer', 4000, 9000);
+INSERT INTO Jobs VALUES (4, 'ST_MAN', 3500, 8000);
+INSERT INTO Jobs VALUES (5, 'HR Manager', 4500, 9500);
+
+CREATE TABLE Department (
+    department_id NUMBER PRIMARY KEY,
+    department_name VARCHAR2(50),
+    location VARCHAR2(100)
+);
+INSERT INTO Department VALUES (10, 'Sales', 'New York');
+INSERT INTO Department VALUES (20, 'Engineering', 'San Francisco');
+INSERT INTO Department VALUES (30, 'HR', 'Chicago');
+
+CREATE TABLE Employees (
+    empno NUMBER PRIMARY KEY,
+    firstname VARCHAR2(50),
+    lastname VARCHAR2(50),
+    job_id NUMBER,
+    department_id NUMBER,
+    sal NUMBER(10, 2),
+    FOREIGN KEY (job_id) REFERENCES Jobs(job_id),
+    FOREIGN KEY (department_id) REFERENCES Department(department_id)
+);
+INSERT INTO Employees VALUES (7521, 'John', 'Doe', 1, 10, 5000);
+INSERT INTO Employees VALUES (7839, 'Jane', 'Smith', 2, 10, 8000);
+INSERT INTO Employees VALUES (7844, 'Robert', 'Brown', 3, 20, 6000);
+INSERT INTO Employees VALUES (7876, 'Lucy', 'White', 4, 20, 4500);
+INSERT INTO Employees VALUES (7902, 'James', 'Black', 5, 30, 5500);
+INSERT INTO Employees VALUES (7934, 'Maria', 'Green', 1, 10, 3500);
+INSERT INTO Employees VALUES (7782, 'Paul', 'Red', 4, 20, 3000);
+
+SELECT firstname, lastname, sal 
+FROM Employees 
+WHERE sal < (SELECT sal FROM Employees WHERE empno = 7876);
+
+SELECT firstname, lastname 
+FROM Employees 
+WHERE sal = (SELECT MAX(sal) 
+             FROM Employees 
+             WHERE sal < (SELECT MAX(sal) FROM Employees));
+
+SELECT firstname, lastname, sal 
+FROM Employees 
+WHERE job_id = (SELECT job_id FROM Jobs WHERE job_title = 'Sales Representative')
+AND sal > (SELECT MIN(sal) FROM Employees WHERE job_id = (SELECT job_id FROM Jobs WHERE job_title = 'Sales Manager'));
+
+SELECT firstname, lastname, sal 
+FROM Employees 
+WHERE job_id = (SELECT job_id FROM Employees WHERE empno = 7521) 
+AND sal = (SELECT sal FROM Employees WHERE empno = 7521);
+
+SELECT firstname, lastname, sal 
+FROM Employees 
+WHERE sal < (SELECT MIN(sal) FROM Employees WHERE job_id = (SELECT job_id FROM Jobs WHERE job_title = 'ST_MAN'));
+
+SELECT firstname, lastname, sal 
+FROM Employees 
+WHERE sal = (SELECT MIN(sal) 
+             FROM Employees 
+             WHERE department_id = Employees.department_id);
+*/
