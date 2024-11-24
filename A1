@@ -1,0 +1,88 @@
+Assignment 1
+Introduction to DDL and basic DML Commands
+Table for Customer -
+customer (cust_id ,cust_fname ,cust_lname ,territory ,cred_lmt, mngr_id , marital_status, ,income)
+cust_id cust_fname cust_lname territory cred_limt mngr_id marital_status income
+America
+Meg Sen Italy
+India 5000 Single
+1. Create and insert given data in table customer.
+Command:
+create table customer(cust_id number, cust_fname varchar2(20), cust_lname 
+varchar2(20), territory varchar2(20), cred_lmt number, mngr_id number, marital_status 
+varchar2(20), income number);
+insert into customer(cust_id, cust_fname, cust_lname, territory, cred_lmt, mngr_id, 
+marital_status, income) values (101, 'Radhika', 'Sharma', 'America', 500000, 501, 
+'Married', 2500000);
+insert into customer(cust_id, cust_fname, cust_lname, territory, cred_lmt, mngr_id, 
+marital_status, income) values (102, 'Meg', 'Sen', 'Italy', 200000, 502, 'Single', 
+1000000);
+insert into customer(cust_id, cust_fname, cust_lname, territory, cred_lmt, mngr_id, 
+marital_status, income) values (103, 'Kunal', 'Singh', 'India', 5000, 503, 'Single', 
+200000);
+select * from customer;
+Output:
+2. Alter table and Add column stay_from_year.
+Command:
+alter table customer add stay_from_year number;
+Output:
+3. Set value of stay_from_year as 2001 for America.
+Command:
+update customer set stay_from_year = 2001 where territory='America';
+select * from customer;
+Output:
+4. Display credit limit attribute for America.
+Command:
+select cred_lmt from customer where territory='America';
+Output:
+5. Delete the record corresponding to Meg Sen.
+Command:
+delete from customer where cust_fname ='Meg' and cust_lname ='Sen';
+select * from customer;
+Output:
+6. Show all data in the territory Italy.
+Command:
+select * from customer where territory='Italy';
+Output:
+7. If territory is India and status is Single set value of credit to 7000.
+Command:
+update customer set cred_lmt = 7000 where territory = 'India' and marital_status =
+'Single';
+select * from customer;
+Output:
+8. Rename cust_fname to first_name.
+Command:
+alter table customer rename column cust_fname to first_name;
+Output:
+9. Rename cust_lname to last_name.
+Command:
+alter table customer rename column cust_lname to last_name;
+Output:
+10. Drop column income from customer.
+Command:
+alter table customer drop column income;
+Output:
+11. Rename table customer to cust_one.
+Command:
+alter table customer rename to cust_one;
+Output:
+12. Alter the table customer change cust id to varchar2(6).
+Command:
+alter table cust_one modify cust_id varchar2(6);
+Output:
+13. Add new attribute mngr_name to customer and insert 2 records.
+Command:
+alter table cust_one add mngr_name varchar2(20);
+update cust_one set mngr_name = 'Raj Ahuja' where mngr_id = 501;
+update cust_one set mngr_name = 'Amit Rao' where mngr_id = 503;
+select * from cust_one;
+Output:
+14. Add attribute age to customer.
+Command:
+alter table cust_one add age number;
+Output:
+15. Drop table customer and then bring it back.
+Command:
+drop table cust_one;
+flashback table cust_one to before drop;
+Output:
