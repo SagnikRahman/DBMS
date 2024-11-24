@@ -1,0 +1,101 @@
+Assignment 2
+Functions
+1. Write query to select all the columns of employees table of HR.
+Query:
+select * from hr.employees;
+Output:
+2. Write query to select only Employees name, id and Job.
+Query:
+select first_name, last_name, employee_id, job_id from hr.employees;
+Output:
+3. Write query to select unique Jobs. (Use - Distinct)
+Query:
+select distinct job_id from hr.employees;
+Output:
+4. Write query to select only those employees who have job ‘ST_CLERK’.
+Query:
+select * from hr.employees where job_id in ('ST_CLERK');
+Output:
+5. Select employee name, grade and salary, in the order of their salary.
+Query:
+select first_name, job_id, salary from hr.employees order by salary;
+Output:
+6. Mgmt. is considering a pay raise, however they want to find out, if they give a flat 200/-
+increment to all, then what % each person is getting. So, in your result display, ename, salary 
+and pctincr.
+Query:
+select first_name,salary,round(((((salary+200)-salary)/salary)*100),2) as 
+pctincr from hr.employees;
+Output:
+7. Express work experience of each of the employees by using sysdate and hiredate in terms of 
+number of years.
+Query:
+select round(months_between(sysdate, hire_date)/12) as work_experience from 
+hr.employees;
+Output:
+8. Select only those employees who are a clerk or a manager. Use all of ‘or’ condition, ‘IN’ and 
+‘NOT IN’ clause. Comment on the case sensitivity of the string literal within single quote.
+(Note- in the table employees, clerk is ‘ST_CLERK’ and manager is ‘ST_MAN’)
+Query:
+(i) select * from hr.employees where job_id = 'ST_CLERK' OR job_id = 
+'ST_MAN';
+(ii) select * from hr.employees where job_id IN('ST_CLERK','ST_MAN');
+(iii) select * from hr.employees where job_id NOT IN(select distinct job_id 
+from hr.employees where job_id NOT IN('ST_CLERK', 'ST_MAN'));
+In Oracle SQL, string literals within single quotes are case-sensitive. This means that 'ST_CLERK' is 
+different from 'ST_Clerk', 'st_clerk', or any other variation in case. The queries mentioned above assume 
+that the job_id values are exactly 'ST_CLERK' and 'ST_MAN' as specified.
+Output:
+9. Use emp table and use different columns and string concatenation to display a message like 
+below for each of the employees Output – Example: JAMES is a CLERK and is working in the 
+company for last 32 years.
+Query:
+select first_name || ' is a ' || job_id || ' and is working in the company 
+for last ' || round((months_between(sysdate,hire_date)/12)) || ' years.' as 
+message from hr.employees;
+Output:
+10. Use employees table to display only those employees who have joined in the year 2000 and 
+2008. Comment on if between clause is inclusive or exclusive.
+Query:
+select first_name, hire_date from hr.employees where hire_date between '01-
+JAN-00' and '31-DEC-08';
+On observing the output, we conclude that between clause is inclusive in nature.
+Output:
+11. Use like statement to display name of the employees and their id which start with ‘A’. Write 
+your remarks on use of wildcards with like statement. 
+Query:
+select first_name,job_id from hr.employees where first_name like 'A%';
+Using wildcards (such as %, _, [ ], $ and ^) with like can greatly enhance the flexibility of our queries, 
+allowing us to match patterns rather than exact values.
+Output:
+12. Select those employees, who have joined between 1st January 2000 to 31st December 2002 and 
+is either a clerk or having a salary greater than 2500. (Use – between)
+Query:
+select * from hr.employees where (hire_date between '01-JAN-2000' and '31-
+DEC-2002') and (job_id = 'ST_CLERK' or salary > 2500);
+Output:
+13. Convert the string ‘Kolkata’ into its upper case and ‘MUMBAI’ to its lower-case value.
+Query:
+(i) select upper('Kolkata') from dual;
+(ii) select lower('MUMBAI') from dual;
+Output:
+14. Display name of your institute in all Upper-Case.
+Query:
+select upper('Institute of Engineering and Management') from dual;
+Output:
+15. From dual table display email and domain separately.
+Query:
+select email as email_address, substr(email, 1, instr(email, '@') - 1) as 
+domain from (select 'sagnikr15@gmail.com' as email from dual);
+Output:
+16. Display day, month and year of the hire date of employees. (Use – ‘employees’ table)
+Query:
+select to_char(hire_date, 'DD') as day, to_char(hire_date, 'Month') as 
+month, to_char(hire_date, 'YYYY') as year from hr.employees;
+Output:
+17. Display the last name of the employees in a manner, so that they are right aligned. (use -
+rtrim/ltrim)
+Query:
+select rtrim(lpad(last_name, 20)) as right_aligned_last_name from 
+hr.employees;
+Output:
