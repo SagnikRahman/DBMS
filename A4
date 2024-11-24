@@ -1,0 +1,289 @@
+Assignment 4
+Cross-Join, Inner-Join, Set Operations in SQL
+SAILOR
+SID SNAME MNAME SURNAME RATING AGE
+s22 Fredrico - Roberts 7 45
+s31 Lubber - Sheen 8 55.5
+s32 Charlotte - Gordin 8 25.5
+s58 Mary Beth Lyon 10 35
+s64 Horatio - Powell 7 35.4
+s71 Zorba - Alex 10 16
+s29 Brutus - Slater 1 33.8
+s95 Deep Graceb Davis 3 63.5
+s74 Horatio - Forrest 9 35
+s85 Sara Art Powell 3 25.5
+s80 Deep Kumar Kumar 6 17
+s87 Deep Kumar Jha 8 51
+BOAT
+BID BNAME COLOR
+b11 Interlake blue
+b12 Interlake red
+b13 Clipper green
+b14 Marine red
+RESERVE
+SID BID R_DAY
+s22 b11 10-OCT-98
+s22 b12 10-OCT-98
+s22 b13 10-AUG-98
+s22 b14 10-JUL-98
+s31 b12 11-JUN-98
+s31 b12 11-OCT-98
+s31 b14 11-DEC-98
+s64 b11 09-MAY-98
+s64 b12 09-AUG-98
+s74 b13 09-AUG-98
+s80 b12 07-JUL-98
+s87 b11 08-JUL-98
+s87 b12 12-DEC-98
+Table creation and data insertion query:
+CREATE TABLE SAILOR ( 
+ SID VARCHAR2(10) PRIMARY KEY, 
+ SNAME VARCHAR2(50), 
+ MNAME VARCHAR2(50), 
+ SURNAME VARCHAR2(50), 
+ RATING NUMBER, 
+ AGE NUMBER 
+)
+CREATE TABLE BOAT ( 
+ BID VARCHAR2(10) PRIMARY KEY, 
+ BNAME VARCHAR2(50), 
+ COLOR VARCHAR2(20) 
+)
+CREATE TABLE RESERVE ( 
+ SID VARCHAR2(10), 
+ BID VARCHAR2(10), 
+ R_DAY DATE, 
+ PRIMARY KEY (SID, BID, R_DAY) 
+)
+ALTER TABLE RESERVE ADD CONSTRAINT fk_sailor FOREIGN KEY (SID) REFERENCES SAILOR(SID)
+ALTER TABLE RESERVE ADD CONSTRAINT fk_boat FOREIGN KEY (BID) REFERENCES BOAT(BID)
+INSERT INTO SAILOR VALUES ('s22', 'Fredrico', NULL, 'Roberts', 7, 45);
+INSERT INTO SAILOR VALUES ('s31', 'Lubber', NULL, 'Sheen', 8, 55.5);
+INSERT INTO SAILOR VALUES ('s32', 'Charlotte', NULL, 'Gordin', 8, 25.5);
+INSERT INTO SAILOR VALUES ('s58', 'Mary', 'Beth', 'Lyon', 10, 35);
+INSERT INTO SAILOR VALUES ('s64', 'Horatio', NULL, 'Powell', 7, 35.4);
+INSERT INTO SAILOR VALUES ('s71', 'Zorba', NULL, 'Alex', 10, 16);
+INSERT INTO SAILOR VALUES ('s29', 'Brutus', NULL, 'Slater', 1, 33.8);
+INSERT INTO SAILOR VALUES ('s95', 'Deep', 'Graceb', 'Davis', 3, 63.5);
+INSERT INTO SAILOR VALUES ('s74', 'Horatio', NULL, 'Forrest', 9, 35);
+INSERT INTO SAILOR VALUES ('s85', 'Sara', 'Art', 'Powell', 3, 25.5);
+INSERT INTO SAILOR VALUES ('s80', 'Deep', 'Kumar', 'Kumar', 6, 17);
+INSERT INTO SAILOR VALUES ('s87', 'Deep', 'Kumar', 'Jha', 8, 51);
+INSERT INTO BOAT VALUES ('b11', 'Interlake', 'blue');
+INSERT INTO BOAT VALUES ('b12', 'Interlake', 'red');
+INSERT INTO BOAT VALUES ('b13', 'Clipper', 'green');
+INSERT INTO BOAT VALUES ('b14', 'Marine', 'red');
+INSERT INTO RESERVE VALUES ('s22', 'b11', TO_DATE('10-OCT-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s22', 'b13', TO_DATE('10-AUG-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s22', 'b12', TO_DATE('10-OCT-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s22', 'b14', TO_DATE('10-JUL-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s31', 'b12', TO_DATE('11-OCT-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s31', 'b12', TO_DATE('11-JUN-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s31', 'b14', TO_DATE('11-DEC-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s64', 'b11', TO_DATE('09-MAY-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s64', 'b12', TO_DATE('09-AUG-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s74', 'b13', TO_DATE('09-AUG-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s80', 'b12', TO_DATE('07-JUL-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s87', 'b11', TO_DATE('08-JUL-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s87', 'b12', TO_DATE('12-DEC-98', 'DD-MON-YY'));
+SELECT * FROM SAILOR;
+SELECT * FROM BOAT;
+SELECT * FROM RESERVE;
+1. Find sid of sailors who have reserved boat ‘b14’
+Query:
+SELECT DISTINCT sid FROM RESERVE WHERE bid = 'b14';
+Output:
+2. Select names of the sailors for whom rating is present.
+Query:
+ SELECT sname,surname FROM SAILOR WHERE rating IS NOT NULL;
+ Output:
+3. Select names for rating absent.
+Query:
+SELECT sname,surname FROM SAILOR WHERE rating IS NULL;
+Output:
+4. Find colour of boats reserved by Lubber.
+Query:
+SELECT DISTINCT b.color FROM SAILOR s JOIN RESERVE r ON s.sid = r.sid JOIN BOAT b 
+ON r.bid = b.bid WHERE s.sname = 'Lubber';
+Output:
+5. Find sailor names that have reserved at least one boat.
+Query:
+SELECT DISTINCT s.sname, s.surname FROM SAILOR s JOIN RESERVE r ON s.sid = r.sid;
+Output:
+Assignment 4
+Cross-Join, Inner-Join, Set Operations in SQL
+SAILOR
+SID SNAME MNAME SURNAME RATING AGE
+s22 Fredrico - Roberts 7 45
+s31 Lubber - Sheen 8 55.5
+s32 Charlotte - Gordin 8 25.5
+s58 Mary Beth Lyon 10 35
+s64 Horatio - Powell 7 35.4
+s71 Zorba - Alex 10 16
+s29 Brutus - Slater 1 33.8
+s95 Deep Graceb Davis 3 63.5
+s74 Horatio - Forrest 9 35
+s85 Sara Art Powell 3 25.5
+s80 Deep Kumar Kumar 6 17
+s87 Deep Kumar Jha 8 51
+BOAT
+BID BNAME COLOR
+b11 Interlake blue
+b12 Interlake red
+b13 Clipper green
+b14 Marine red
+RESERVE
+SID BID R_DAY
+s22 b11 10-OCT-98
+s22 b12 10-OCT-98
+s22 b13 10-AUG-98
+s22 b14 10-JUL-98
+s31 b12 11-JUN-98
+s31 b12 11-OCT-98
+s31 b14 11-DEC-98
+s64 b11 09-MAY-98
+s64 b12 09-AUG-98
+s74 b13 09-AUG-98
+s80 b12 07-JUL-98
+s87 b11 08-JUL-98
+s87 b12 12-DEC-98
+Table creation and data insertion query:
+CREATE TABLE SAILOR ( 
+ SID VARCHAR2(10) PRIMARY KEY, 
+ SNAME VARCHAR2(50), 
+ MNAME VARCHAR2(50), 
+ SURNAME VARCHAR2(50), 
+ RATING NUMBER, 
+ AGE NUMBER 
+)
+CREATE TABLE BOAT ( 
+ BID VARCHAR2(10) PRIMARY KEY, 
+ BNAME VARCHAR2(50), 
+ COLOR VARCHAR2(20) 
+)
+CREATE TABLE RESERVE ( 
+ SID VARCHAR2(10), 
+ BID VARCHAR2(10), 
+ R_DAY DATE, 
+ PRIMARY KEY (SID, BID, R_DAY) 
+)
+ALTER TABLE RESERVE ADD CONSTRAINT fk_sailor FOREIGN KEY (SID) REFERENCES SAILOR(SID)
+ALTER TABLE RESERVE ADD CONSTRAINT fk_boat FOREIGN KEY (BID) REFERENCES BOAT(BID)
+INSERT INTO SAILOR VALUES ('s22', 'Fredrico', NULL, 'Roberts', 7, 45);
+INSERT INTO SAILOR VALUES ('s31', 'Lubber', NULL, 'Sheen', 8, 55.5);
+INSERT INTO SAILOR VALUES ('s32', 'Charlotte', NULL, 'Gordin', 8, 25.5);
+INSERT INTO SAILOR VALUES ('s58', 'Mary', 'Beth', 'Lyon', 10, 35);
+INSERT INTO SAILOR VALUES ('s64', 'Horatio', NULL, 'Powell', 7, 35.4);
+INSERT INTO SAILOR VALUES ('s71', 'Zorba', NULL, 'Alex', 10, 16);
+INSERT INTO SAILOR VALUES ('s29', 'Brutus', NULL, 'Slater', 1, 33.8);
+INSERT INTO SAILOR VALUES ('s95', 'Deep', 'Graceb', 'Davis', 3, 63.5);
+INSERT INTO SAILOR VALUES ('s74', 'Horatio', NULL, 'Forrest', 9, 35);
+INSERT INTO SAILOR VALUES ('s85', 'Sara', 'Art', 'Powell', 3, 25.5);
+INSERT INTO SAILOR VALUES ('s80', 'Deep', 'Kumar', 'Kumar', 6, 17);
+INSERT INTO SAILOR VALUES ('s87', 'Deep', 'Kumar', 'Jha', 8, 51);
+INSERT INTO BOAT VALUES ('b11', 'Interlake', 'blue');
+INSERT INTO BOAT VALUES ('b12', 'Interlake', 'red');
+INSERT INTO BOAT VALUES ('b13', 'Clipper', 'green');
+INSERT INTO BOAT VALUES ('b14', 'Marine', 'red');
+INSERT INTO RESERVE VALUES ('s22', 'b11', TO_DATE('10-OCT-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s22', 'b13', TO_DATE('10-AUG-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s22', 'b12', TO_DATE('10-OCT-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s22', 'b14', TO_DATE('10-JUL-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s31', 'b12', TO_DATE('11-OCT-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s31', 'b12', TO_DATE('11-JUN-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s31', 'b14', TO_DATE('11-DEC-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s64', 'b11', TO_DATE('09-MAY-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s64', 'b12', TO_DATE('09-AUG-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s74', 'b13', TO_DATE('09-AUG-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s80', 'b12', TO_DATE('07-JUL-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s87', 'b11', TO_DATE('08-JUL-98', 'DD-MON-YY'));
+INSERT INTO RESERVE VALUES ('s87', 'b12', TO_DATE('12-DEC-98', 'DD-MON-YY'));
+SELECT * FROM SAILOR;
+SELECT * FROM BOAT;
+SELECT * FROM RESERVE;
+1. Find sid of sailors who have reserved boat ‘b14’
+Query:
+SELECT DISTINCT sid FROM RESERVE WHERE bid = 'b14';
+Output:
+2. Select names of the sailors for whom rating is present.
+Query:
+ SELECT sname,surname FROM SAILOR WHERE rating IS NOT NULL;
+ Output:
+3. Select names for rating absent.
+Query:
+SELECT sname,surname FROM SAILOR WHERE rating IS NULL;
+Output:
+4. Find colour of boats reserved by Lubber.
+Query:
+SELECT DISTINCT b.color FROM SAILOR s JOIN RESERVE r ON s.sid = r.sid JOIN BOAT b 
+ON r.bid = b.bid WHERE s.sname = 'Lubber';
+Output:
+5. Find sailor names that have reserved at least one boat.
+Query:
+SELECT DISTINCT s.sname, s.surname FROM SAILOR s JOIN RESERVE r ON s.sid = r.sid;
+Output:
+6. Find the ids and names of sailors who have reserved two different boats on the same day.
+Query:
+SELECT DISTINCT s.SID, s.sname, s.surname FROM SAILOR s 
+ JOIN RESERVE r1 ON s.sid=r1.sid 
+ JOIN RESERVE r2 ON s.sid=r2.sid 
+WHERE r1.bid <> r2.bid AND r1.r_day=r2.r_day
+Output:
+7. Find name of sailors whose name begins and ends with B and has at least 3 characters.
+Query:
+SELECT sname FROM SAILOR WHERE sname LIKE 'B%' AND sname LIKE '%B' AND 
+LENGTH(sname)>=3
+Output:
+8. Find name of sailors whose name begins and ends with B and has exactly 3 characters.
+Query:
+SELECT sname FROM SAILOR WHERE sname LIKE 'B%' AND sname LIKE '%B' AND 
+LENGTH(sname)=3
+Output:
+9. Display all names (including duplicates) of sailors who have reserved a red boat or a green boat.
+Query:
+SELECT s.sname,s.surname FROM SAILOR s 
+JOIN RESERVE r ON s.sid = r.sid 
+JOIN BOAT b ON r.bid = b.bid 
+WHERE b.color IN('red','green')
+Output:
+10. Find names of sailors who have reserved a red boat or a green boat.
+Query:
+SELECT DISTINCT s.sname,s.surname FROM SAILOR s 
+JOIN RESERVE r ON s.sid = r.sid 
+JOIN BOAT b ON r.bid = b.bid 
+WHERE b.color IN('red','green')
+Output:
+11. Find names of sailors who have reserved a red boat and a green boat.
+Query:
+SELECT s.sname, s.surname 
+FROM SAILOR s 
+WHERE s.sid IN( 
+ SELECT r1.sid 
+ FROM RESERVE r1 
+ JOIN BOAT b1 ON r1.bid = b1.bid 
+ WHERE b1.color='red' 
+) 
+AND s.sid IN( 
+ SELECT r2.sid 
+ FROM RESERVE r2 
+ JOIN BOAT b2 ON r2.bid = b2.bid 
+ WHERE b2.color='green' 
+)
+Output:
+12. Find names of sailors who have reserved a red boat but not a green boat.
+Query:
+SELECT s.sname, s.surname 
+FROM SAILOR s 
+WHERE s.sid IN( 
+ SELECT r1.sid 
+ FROM RESERVE r1 
+ JOIN BOAT b1 ON r1.bid = b1.bid 
+ WHERE b1.color='red' 
+) 
+AND s.sid NOT IN( 
+ SELECT r2.sid 
+ FROM RESERVE r2 
+ JOIN BOAT b2 ON r2.bid = b2.bid 
+ WHERE b2.color='green' 
+)
+Output:
