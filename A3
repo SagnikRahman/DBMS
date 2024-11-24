@@ -1,0 +1,135 @@
+Assignment 3
+Constraints
+1. Create table dept with the following attributes (Add constraints during creation of the table):
+Column name Data type(size) Constraints
+dept_id number(3) Primary key
+dept_name varchar2(10)
+Query:
+CREATE TABLE dept (
+ dept_id NUMBER(3) PRIMARY KEY, 
+ dept_name VARCHAR2(10)
+);
+Output:
+2. Insert 4 department records with names and id's 90, 69, 100 and 110.
+Query:
+ INSERT INTO dept (dept_id, dept_name) VALUES (90, 'CSE');
+ INSERT INTO dept (dept_id, dept_name) VALUES (69, 'IT');
+ INSERT INTO dept (dept_id, dept_name) VALUES (100, 'ECE');
+ INSERT INTO dept (dept_id, dept_name) VALUES (110, 'ME');
+ SELECT * FROM dept;
+Output:
+ 
+3. Create table Student with the following attributes(Add constraints during creation of the table):
+Column name Data type(size) Constraints
+stud_id number(3) Primary key
+name varchar2(15)
+marks number(5,2)
+dept_id number(3) Foreign key refers to dept
+Query:
+CREATE TABLE Student (
+ stud_id NUMBER(3) PRIMARY KEY, 
+ name VARCHAR2(15), 
+ marks NUMBER(5,2), 
+ dept_id NUMBER(3), 
+ CONSTRAINT fk_dept FOREIGN KEY (dept_id) REFERENCES dept(dept_id)
+);
+Output:
+4. Insert 4 student records.
+Query:
+INSERT INTO Student (stud_id, name, marks, dept_id) VALUES (01, 'Ravi Shankar', 
+70.50, 90);
+INSERT INTO Student (stud_id, name, marks, dept_id) VALUES (02, 'Rahul Roy', 90.50, 
+69);
+INSERT INTO Student (stud_id, name, marks, dept_id) VALUES (03, 'Shivani Singh', 
+80.00, 100);
+INSERT INTO Student (stud_id, name, marks, dept_id) VALUES (04, 'Aryan Shaw', 
+50.50, 110);
+Output:
+5. Insert a record in the student table with dept_id 50.
+Query:
+INSERT INTO dept (dept_id, dept_name) VALUES (50, 'EE');
+INSERT INTO Student (stud_id, name, marks, dept_id) VALUES (05, 'Radharaman Das', 
+95.00, 50);
+SELECT * FROM Student;
+Output:
+6. Display the name and marks of the students whose name contain at least one ‘d’. [using like]
+Query:
+SELECT name, marks FROM Student WHERE name LIKE '%d%';
+Output:
+7. Create table cust100 with the following attributes (Add constraints after creating the table):
+Column name Data type(size) Constraints
+emp_id number(3) Primary key
+first_name varchar2(10) Initial letter capital
+last_name varchar2(10) Initial letter capital and not null
+e_mail varchar2(20) All upper case
+ph_no varchar2(15) 10 digits
+hire_date date Should be > than 01-jan-1980
+job_id varchar2(10) Must begin with FI or AD or IT
+salary number(8,2) > 4000 & < 25000
+mgr_id number(3)
+dept_id number(3) Foreign key, refer table dept
+Query:
+CREATE TABLE cust100 (
+ emp_id NUMBER(3), 
+ first_name VARCHAR2(10), 
+ last_name VARCHAR2(10) NOT NULL, 
+ e_mail VARCHAR2(20), 
+ ph_no VARCHAR2(15), 
+ hire_date DATE, 
+ job_id VARCHAR2(10), 
+ salary NUMBER(8,2), 
+ mgr_id NUMBER(3), 
+ dept_id NUMBER(3)
+);
+ALTER TABLE cust100 ADD PRIMARY KEY(emp_id);
+ALTER TABLE cust100 ADD CONSTRAINT c_fname CHECK ((SUBSTR(first_name, 1, 1)) = 
+UPPER(SUBSTR(first_name, 1, 1)));
+ALTER TABLE cust100 ADD CONSTRAINT c_lname CHECK ((SUBSTR(last_name, 1, 1)) = 
+UPPER(SUBSTR(last_name, 1, 1)));
+ALTER TABLE cust100 ADD CONSTRAINT c_email CHECK (e_mail = UPPER(e_mail));
+ALTER TABLE cust100 ADD CONSTRAINT c_phno CHECK (LENGTH(ph_no) = 10);
+ALTER TABLE cust100 ADD CONSTRAINT c_hire_date CHECK (hire_date > DATE '1980-01-
+01');
+ALTER TABLE cust100 ADD CONSTRAINT c_jid CHECK (job_id LIKE 'FI%' OR job_id LIKE 
+'AD%' OR job_id LIKE 'IT%');
+ALTER TABLE cust100 ADD CONSTRAINT c_salary CHECK (salary > 4000 AND salary < 
+25000);
+ALTER TABLE cust100 ADD CONSTRAINT fk_dept_id FOREIGN KEY (dept_id) REFERENCES 
+dept(dept_id);
+Output:
+8. Add 6 records to cust100.
+Query:
+INSERT INTO cust100 (emp_id, first_name, last_name, e_mail, ph_no, hire_date, 
+job_id, salary, mgr_id, dept_id) VALUES (1, 'Rahul', 'Sharma', 'RAHUL@GMAIL.COM', 
+'1234567890', DATE '2000-05-15', 'FI_01', 5000, 101, 90);
+INSERT INTO cust100 (emp_id, first_name, last_name, e_mail, ph_no, hire_date, 
+job_id, salary, mgr_id, dept_id) VALUES (2, 'Riya', 'Mehta', 'RIYA@GMAIL.COM', 
+'0987654321', DATE '2001-06-25', 'AD_01', 6000, 102, 69);
+INSERT INTO cust100 (emp_id, first_name, last_name, e_mail, ph_no, hire_date, 
+job_id, salary, mgr_id, dept_id) VALUES (3, 'Anil', 'Kumar', 'ANIL@GMAIL.COM', 
+'1122334455', DATE '2002-07-30', 'IT_01', 7000, 103, 100);
+INSERT INTO cust100 (emp_id, first_name, last_name, e_mail, ph_no, hire_date, 
+job_id, salary, mgr_id, dept_id) VALUES (4, 'Suman', 'Patel', 'SUMAN@GMAIL.COM', 
+'5566778899', DATE '2003-08-10', 'FI_02', 8000, 104, 110);
+INSERT INTO cust100 (emp_id, first_name, last_name, e_mail, ph_no, hire_date, 
+job_id, salary, mgr_id, dept_id) VALUES (5, 'Amit', 'Verma', 'AMIT@GMAIL.COM', 
+'6677889900', DATE '2004-09-20', 'AD_02', 9000, 105, 90);
+INSERT INTO cust100 (emp_id, first_name, last_name, e_mail, ph_no, hire_date, 
+job_id, salary, mgr_id, dept_id) VALUES (6, 'Neha', 'Singh', 'NEHA@GMAIL.COM', 
+'7788990011', DATE '2005-10-15', 'IT_02', 10000, 106, 69);
+SELECT * FROM cust100;
+Output:
+9. Drop column mrg_id.
+Query:
+ALTER TABLE cust100 DROP COLUMN mgr_id;
+Output:
+10. Add column mgr_id and make it self-referenced such that first 3 id's correspond to sixth emp_id, next 2 
+correspond to first emp_id and the last 1 correspond to the fifth emp_id.
+Query:
+ALTER TABLE cust100 ADD mgr_id NUMBER(3);
+ALTER TABLE cust100 ADD CONSTRAINT fk_mgr_id FOREIGN KEY (mgr_id) REFERENCES 
+cust100(emp_id);
+UPDATE cust100 SET mgr_id = 6 WHERE emp_id IN (1, 2, 3);
+UPDATE cust100 SET mgr_id = 1 WHERE emp_id IN (4, 5);
+UPDATE cust100 SET mgr_id = 5 WHERE emp_id = 6;
+Output:
