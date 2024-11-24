@@ -1,0 +1,93 @@
+Assignment 5
+Self-Join, Outer Join, Group By
+1. Create and insert data in – “emp” and “dept”. (Check HR schema, table names may be 
+different)
+Employees and Departments tables are already present in HR schema
+2. Display name of employees, department name and job name for each employee.
+Query:
+SELECT e.first_name || ' ' || e.last_name AS employee_name, 
+ d.department_name, 
+ j.job_title 
+FROM HR.employees e 
+JOIN HR.departments d ON e.department_id = d.department_id 
+JOIN HR.jobs j ON e.job_id = j.job_id
+Output:
+3. Display the number of employees in each department in the order of their count of employees.
+(Note – display the department with highest number of employees, followed by next highest, so 
+on)
+Query:
+SELECT d.department_name, 
+ COUNT(e.employee_id) AS employee_count 
+FROM HR.employees e 
+JOIN HR.departments d 
+ ON e.department_id = d.department_id 
+GROUP BY d.department_name 
+ORDER BY employee_count DESC
+Output:
+4. Display the department name along with no. of employees and average salary of that 
+department.
+Query:
+SELECT d.department_name, 
+ COUNT(e.employee_id) AS employee_count, 
+ ROUND(AVG(e.salary), 1) AS average_salary 
+FROM HR.employees e 
+JOIN HR.departments d ON e.department_id = d.department_id 
+GROUP BY d.department_name
+Output:
+5. For each department, find out no. of jobs the employees are assigned to.
+Query:
+SELECT d.department_name, 
+ COUNT(DISTINCT e.job_id) AS job_count 
+FROM HR.employees e 
+JOIN HR.departments d ON e.department_id = d.department_id 
+GROUP BY d.department_name
+Output:
+6. Find the maximum salary in each department, but only for those departments which have 
+more than one employee. (Display in order of department id)
+Query:
+SELECT d.department_id, 
+ d.department_name, 
+ MAX(e.salary) AS maximum_salary 
+FROM hr.departments d 
+JOIN hr.employees e ON e.department_id = d.department_id
+GROUP BY d.department_id, d.department_name
+HAVING COUNT(e.employee_id) > 1
+ORDER BY d.department_id;
+Output:
+7. Group by the employees based on the first character of employee first name. Display the results 
+in alphabetic order (descending) of first character.
+Query:
+SELECT SUBSTR(e.FIRST_NAME, 1, 1) AS first_character, 
+ COUNT(*) AS employee_count
+FROM HR.Employees e
+GROUP BY SUBSTR(e.FIRST_NAME, 1, 1)
+ORDER BY first_character DESC;
+Output:
+8. Display department id wise count of employees.
+Query:
+SELECT department_id, 
+ COUNT(*) AS employee_count 
+FROM HR.employees
+GROUP BY department_id
+ORDER BY department_id;
+Output:
+9. -who are 'CLERK' 
+-Apart from the above condition, make sure only those departments are selected, which has 
+more than 3 'CLERK' in it.
+Sufficient information about details to be displayed is not provided in the question.
+10. Display the list of employees and their supervisor from “emp” table. (check the pre-existing 
+table name for employees)
+Query:
+SELECT e.first_name || ' ' || e.last_name AS employee_name, 
+ m.first_name || ' ' || m.last_name AS supervisor_name 
+FROM HR.employees e 
+LEFT JOIN HR.employees m ON e.manager_id = m.employee_id
+Output:
+11. Write query to find out any departments that are present in department table but does not 
+have employees.
+Query:
+SELECT d.department_name 
+FROM HR.departments d 
+LEFT JOIN HR.employees e ON d.department_id = e.department_id 
+WHERE e.department_id IS NULL
+Output:
